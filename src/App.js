@@ -34,8 +34,7 @@ export default function App() {
           <Route path="/about">
             <AboutContainer />
           </Route>
-          <Route path="/room">
-            <RoomContainer />
+          <Route path="/room/:roomNumber" render={(props)=> <RoomContainer{...props} />} >
           </Route>
           <Route path="/">
             <LandingContainer />

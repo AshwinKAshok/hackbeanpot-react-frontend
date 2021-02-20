@@ -7,6 +7,7 @@ import FirePlaceIcon from '@material-ui/icons/Fireplace';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {useState} from "react";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LandingView(props) {
   const classes = useStyles();
-  var userInput;
-  var roomName;
+  const [userInput, setUserInput] = useState("");
+  const [roomName, setRoomName] = useState("");
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,7 +61,7 @@ export default function LandingView(props) {
             id="username"
             label="Username"
             name="username"
-            onChange={(e) => userInput=e.target.value}
+            onChange={(e) => setUserInput(e.target.value)}
             autoFocus
           />
           <TextField
@@ -71,7 +72,7 @@ export default function LandingView(props) {
             id="roomName"
             label="Room Name"
             name="roomName"
-            onChange={(e) => roomName=e.target.value}
+            onChange={(e) => setRoomName(e.target.value)}
             autoFocus
           />
           <Button
@@ -80,7 +81,9 @@ export default function LandingView(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={(username, roomName) => {props.CreateRoomHandler(userInput, roomName)}}
+            onClick={() => {
+              console.log(userInput)
+              props.CreateRoomHandler(userInput, roomName)}}
           >
             Make a Room
           </Button>

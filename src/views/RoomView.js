@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button, List, ListItem, ListItemText } from '@material-ui/core';
 import '../App.css';
 
 const RoomView = (props) => {
@@ -18,6 +18,26 @@ const RoomView = (props) => {
             <p> "The queue is empty" </p>
           </div>
           <div class="float-child">
+            <div>
+              <h1>Voting</h1>
+              <List>
+                <ListItem>
+                  <Button variant="contained" color="secondary" fullWidth="true">
+                    Song 1
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <Button variant="contained" color="secondary" fullWidth="true">
+                    Song 1
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <Button variant="contained" color="secondary" fullWidth="true">
+                    Song 1
+                  </Button>
+                </ListItem>
+            </List>
+            </div>
             <p> "Share this room w/ friends!" </p>
             <p> "TODO: Put the URL here somehow" </p>
           </div>

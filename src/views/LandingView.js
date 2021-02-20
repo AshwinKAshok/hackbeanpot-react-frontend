@@ -3,7 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import FirePlaceIcon from '@material-ui/icons/Fireplace';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: "DarkOrange",
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -38,9 +38,12 @@ export default function LandingView(props) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+        <Typography component="h1" variant="h1">
+          CampfireQueue
+        </Typography>
         <Avatar className={classes.avatar}>
             {/* TODO: Change this icon later */}
-          <LockOutlinedIcon />
+          <FirePlaceIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Welcome!
@@ -80,6 +83,15 @@ export default function LandingView(props) {
             onClick={(username, roomName) => {props.CreateRoomHandler(userInput, roomName)}}
           >
             Make a Room
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => {props.AboutHandler()}}
+            >
+            About Us
           </Button>
         </form>
       </div>

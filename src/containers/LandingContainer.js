@@ -14,12 +14,17 @@ export default function LandingContainer(props) {
         setState({ redirect: "/room" });
     };
 
+    function AboutHandler() {
+        setState({ redirect: "/about" });
+    }
+
     if (state.redirect) {
         return <Redirect to={state.redirect} />
     } else {
         return (
             <LandingView 
             CreateRoomHandler={CreateRoomHandler}
+            AboutHandler = {AboutHandler}
             />
       
           );

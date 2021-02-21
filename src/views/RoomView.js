@@ -104,6 +104,8 @@ class RoomView extends React.Component{
                   }
                   { this.props.songsList && this.props.songsList.length>=4 && 
                     <Button
+                    variant="contained"
+                    color="primary"
                     onClick = {()=>{this.props.createNewVote()}}
                     >
                       Do a new Vote

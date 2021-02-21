@@ -21,8 +21,8 @@ class RoomContainer extends React.Component {
     this.SearchForSong = this.SearchForSong.bind(this);
     this.FormatURL = this.FormatURL.bind(this);
     this.addSongToList = this.addSongToList.bind(this);
-    this.addSongToVotedList = this.addSongToVotedList.bins(this);
-    this.formatEmbedURL = this.formatEmbedURL.bind(this);
+    this.addSongToVotedList = this.addSongToVotedList.bind(this);
+    this.FormatEmbedURL = this.FormatEmbedURL.bind(this);
   }
 
 
@@ -54,35 +54,46 @@ class RoomContainer extends React.Component {
     return firstHalf + togetherSong + endHalf;
   }
 
-  formatEmbedURL = (url) => {
+  FormatEmbedURL = (url) => {
     let prefix = 'https://open.spotify.com/';
     let splitUrl = url.split(prefix);
     return prefix + 'embed/' + splitUrl[1];
   }
 
   SearchForSong = async (song) => {
-    let songURL = FormatURL(song);
+    let songURL = this.FormatURL(song);
+    let embedUrl;
     await fetch (songURL,
     {
       method: "GET",
       headers: {
-        "Authorization": "Bearer BQAea_1bcZfVlJW1QcgqAmq_5ZJhjEZDRQwMnTzXEQeUi22fkkeZf4B6LiUh1vPbSNth1iOMF02vhgtRdNLK5s4KSxzKcLANmcREa7JONV3qKvxJum__Ut69HBtH7f_-q-4plsuw1igwHcDdZhywBufLOwQcaydEn4o"
+        "Authorization": "Bearer BQBXo2frjyPZrk-1OISJo8UDayKZh16umX7dp--FJF0Z-tZVEzUb2eX5sgkVkWZx0f7-pruWobJvRcxYkfXFZuRf6gHXzRmTKD1Zjii228ftiTXHdImyPA1rlomM2hhIiUh2qaF789L92puofia6Wh4C27adHzwQPkw"
       }
     }).then(async response => await response.json())
     .then(response => {
       let result = response.tracks.items[0];
       let track = result.name;
       let url = result.external_urls.spotify;
-      let embedUrl = formatEmbedURL(url);
+      embedUrl = this.FormatEmbedURL(url);
       console.log(track);
       console.log(embedUrl);
-      return track;
-    }).catch(err => console.log(err));
 
+      let newSong = [track, embedUrl];
+
+      this.addSongToList(newSong);
+    }).catch(err => console.log(err));
   };
 
-  addSongToList = (song) => {
+  addSongToList = (newSong) => {
+    let newSongList = [...this.state.songsList];
+    newSongList.push(newSong);
 
+    console.log("newSong lit:");
+    console.log(newSongList);
+
+    this.setState({
+      songsList : newSongList
+    })
   }
 
   addSongToVotedList = (song) => {
@@ -94,6 +105,7 @@ class RoomContainer extends React.Component {
     <RoomView
       roomInfo={this.state.roomInfo}
       SearchForSong={this.SearchForSong}
+      songsList = {this.state.songsList}
     />
     );
 }

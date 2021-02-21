@@ -16,7 +16,7 @@ const RoomView = (props) => {
               src={song_url}
               width="100%"
               height="80"
-              frameborder="0"
+              frameBorder="0"
               allowtransparency="true"
               allow="encrypted-media">
               </iframe>
@@ -33,7 +33,11 @@ const RoomView = (props) => {
               onChange={(e) => setSongSearch(e.target.value)}
               autoFocus
               />
-              <Button variant="contained" color="primary">
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={() => props.SearchForSong(songSearch)}
+              >
                   + Add to the queue
               </Button>
               {/* <p>{`Queue: ${props.roomInfo.songList}`} </p> */}

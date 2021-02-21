@@ -27,6 +27,7 @@ class RoomContainer extends React.Component {
     this.FormatEmbedURL = this.FormatEmbedURL.bind(this);
     this.ChangeSong = this.ChangeSong.bind(this);
     this.createNewVote = this.createNewVote.bind(this);
+    this.onVoteClickHanlder = this.onVoteClickHanlder.bind(this);
   }
 
 
@@ -83,7 +84,7 @@ class RoomContainer extends React.Component {
     {
       method: "GET",
       headers: {
-        "Authorization": "Bearer BQCAFobrHgWhPpWjEI_DFs4MQ3CMVQzNStbPRkdEdxumWuUvI_-bBeMG4AGpGK4Oemirw5dKicx_lm6PzIFGEtAKcnltRV5rHrbGzqc2I6ZJIDEujk17ImGJgSOlVK1gZMRn7e-SakVXCwS1_s2XhyloOHiq7jwiqM5DLGr2GIU1CIDOqr9-AyW_OQR21ErzBFC4GTtCYNlfWT9lergYDU33NxI6GS6RdOJzfgsM8PGaR4FE9m6IpGqZiMfMS88B9v0QxrW4wn3rOiYtA_2pjREFTdNMtw"
+        "Authorization": "Bearer BQBFlVVg1CpDnzr-izRhsrOsNZg-wjuUfkFg4RWGbxTFxxMYFJ3ANjQ1ONBOnGTegZy-pgHCy_0Hny58Wf6e6C6hRImVVQpAoMR-jQcJXzZtWuqpejHtQcbDqzF4st97x6PCYBW48MBlWZVp__TKdYMoi5AWb62BqPqtc5QVrcYzgMT49k0ke7VDTB9LG2cNCL1hNxtT9xotWuUIkPCbW-42N-hcMz8TRWW0X7Z5NDssph6rlNVimGAFIL8qSM_Wjrme2KBEg6gKw0wi66bQdiM9F-MHtCH47PkriFVMyYFI"
       }
     }).then(async response => await response.json())
     .then(response => {
@@ -186,6 +187,26 @@ class RoomContainer extends React.Component {
   }
 
 
+  onVoteClickHanlder = async (voteIndex) => {
+    await fetch(API_URL + `/room/${this.props.match.params.roomNumber}/vote/${voteIndex}`, {
+      method: "POST",
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    .then(async response => await response.json())
+    .then(response => {
+      console.log("cleared voted songs in backend: "+ response);
+        let currentVote = this.state.currentVotes[voteIndex];
+        let newVotes = [...this.state.currentVotes];
+        newVotes[voteIndex] = currentVote + 1;
+
+        this.setState({
+          currentVotes : newVotes
+        })
+
+    }).catch(err => console.log(err));
+  }
 
 
   render() {
@@ -199,6 +220,7 @@ class RoomContainer extends React.Component {
       currentVotes = {this.state.currentVotes}
       votedSongsList={this.state.votedSongsList}
       createNewVote={this.createNewVote}
+      onVoteClickHanlder = {this.onVoteClickHanlder}
     />
     );
 }

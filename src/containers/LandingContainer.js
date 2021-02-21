@@ -4,15 +4,11 @@ import { withRouter, Link, useRouteMatch } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import {API_URL } from "../common";
 
-
-
-
 export default function LandingContainer(props) {
 
     const [state, setState] = useState({ redirect: null });
 
-
-    async function CreateRoomHandler(username, roomName) {
+    async function createRoomHandler(username, roomName) {
         await fetch(API_URL + `/room/name/${roomName}/admin/${username}`, {
             method: "POST",
             headers: {
@@ -21,12 +17,11 @@ export default function LandingContainer(props) {
         })
         .then(async response => await response.json())
         .then(response  => {
-            console.log(response)
             setState({ redirect: `/room/${response.roomNumber}` });
         }).catch(err => console.log(err));
     };
 
-    function AboutHandler() {
+    function aboutHandler() {
         setState({ redirect: "/about" });
     }
 
@@ -35,8 +30,8 @@ export default function LandingContainer(props) {
     } else {
         return (
             <LandingView 
-            CreateRoomHandler={CreateRoomHandler}
-            AboutHandler = {AboutHandler}
+            createRoomHandler={createRoomHandler}
+            aboutHandler={aboutHandler}
             />
       
           );

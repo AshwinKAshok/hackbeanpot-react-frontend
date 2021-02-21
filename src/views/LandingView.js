@@ -82,8 +82,7 @@ export default function LandingView(props) {
             color="primary"
             className={classes.submit}
             onClick={() => {
-              console.log(userInput)
-              props.CreateRoomHandler(userInput, roomName)}}
+              props.createRoomHandler(userInput, roomName)}}
           >
             Make a Room
           </Button>
@@ -92,7 +91,7 @@ export default function LandingView(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => {props.AboutHandler()}}
+            onClick={() => {props.aboutHandler()}}
             >
             About Us
           </Button>

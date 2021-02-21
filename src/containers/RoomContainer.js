@@ -84,7 +84,7 @@ class RoomContainer extends React.Component {
     {
       method: "GET",
       headers: {
-        "Authorization": "Bearer BQAhx4M5T403cgQb5xb2V1KFW1j1mRsKdj700RdXyUjItaX6qn26bNBI7fMQHdFZfp0Q4THaQEULscB5SXb72sTJpUiudJvysJT4kGxhXuBzEbFxA3k7"
+        "Authorization": "Bearer BQCWWiY8Cyq9NJwbXEvz602PV8FTiacl9KdhaFe-w64Ww6vq3KxGggx4rQzEREDarmyQFDiJtzbsD18yZsmSovZKpPBDxUw5YThtE9EoKh77SjPnN90n2NNAC_2CiC6vNZZEID2z3adWy9S4hnfoMgWGQa2aQWTCuY8Am1qb4XsdTv9JlHnemsu_I2HGTnDTo3alre_iafAaFZewo77S60fyIC5uOPp4ZrqS4xad5FdLUlw01unh1GYdB-ni37vQ43xMbOTrSl7ABN6E576TSCiwQYa8J-thVrg67YsxaRmJ"
       }
     }).then(async response => await response.json())
     .then(response => {

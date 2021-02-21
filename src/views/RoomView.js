@@ -74,23 +74,35 @@ class RoomView extends React.Component{
               <div>
                 <h1>Voting</h1>
                 {/* <p>Current top voted songs: {`${props.roomInfo.currentTopVotedSongs}`}</p> */}
-                <List>
-                  <ListItem>
-                    <Button variant="contained" color="secondary" fullWidth>
-                      Song 1
-                    </Button>
-                  </ListItem>
-                  <ListItem>
-                    <Button variant="contained" color="secondary" fullWidth>
-                      Song 1
-                    </Button>
-                  </ListItem>
-                  <ListItem>
-                    <Button variant="contained" color="secondary" fullWidth>
-                      Song 1
-                    </Button>
-                  </ListItem>
-              </List>
+                {this.props.songsList && this.props.songsList.length>=3 &&
+                  <List>
+                    <ListItem>
+                      <Button variant="contained" color="secondary" fullWidth>
+                      { this.props.votedSongsList && this.props.votedSongsList.length>0 && this.props.votedSongsList[0][0]}
+                      </Button>
+                      <h3>{ this.props.currentVotes[0]}</h3>
+                    </ListItem>
+                    <ListItem>
+                      <Button variant="contained" color="secondary" fullWidth>
+                      {this.props.votedSongsList && this.props.votedSongsList.length>0 && this.props.votedSongsList[1][0]}
+                      </Button>
+                      <h3>{this.props.currentVotes[1]}</h3>
+                    </ListItem>
+                    <ListItem>
+                      <Button variant="contained" color="secondary" fullWidth>
+                      {this.props.votedSongsList && this.props.votedSongsList.length>0 && this.props.votedSongsList[2][0]}
+                      </Button>
+                      <h3>{this.props.currentVotes[2]}</h3>
+                    </ListItem>
+                    <ListItem>
+                      <Button
+                      onClick = {()=>{this.props.createNewVote()}}
+                      >
+                        Do a new Vote
+                      </Button>
+                    </ListItem>
+                </List>
+               }
               </div>
               <p> "Share this room w/ friends!" </p>
               <a href={`${DOMAIN}/room/${this.props.roomInfo.name}`}> {`${DOMAIN}/room/${this.props.roomInfo.roomNumber}`} </a>

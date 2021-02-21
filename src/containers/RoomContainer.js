@@ -13,6 +13,7 @@ class RoomContainer extends React.Component {
     this.state = {
       songsList : [],
       votedSongsList : [],
+      currentVotes: [],
       roomInfo : {},
       roomNumber: -1,
       currentSong: "https://open.spotify.com/embed/track/3Icfi1u3cflshuufK4AsIv"
@@ -22,9 +23,10 @@ class RoomContainer extends React.Component {
     this.SearchForSong = this.SearchForSong.bind(this);
     this.FormatURL = this.FormatURL.bind(this);
     this.addSongToList = this.addSongToList.bind(this);
-    this.addSongToVotedList = this.addSongToVotedList.bind(this);
+    this.updateVoteList = this.updateVoteList.bind(this);
     this.FormatEmbedURL = this.FormatEmbedURL.bind(this);
     this.ChangeSong = this.ChangeSong.bind(this);
+    this.createNewVote = this.createNewVote.bind(this);
   }
 
 
@@ -39,9 +41,21 @@ class RoomContainer extends React.Component {
     .then(async response => await response.json())
     .then(response => {
       console.log(response);
+
+      let newSongsList = [];
+      let newVotedSongsList = [];
+      let newCurrentVotes = [];
+
+      response.songList.forEach(song => newSongsList.push([song.songName, song.songUrl]));
+      response.currentTopVotedSongs.forEach(votedSongs => newVotedSongsList.push([votedSongs.songName, votedSongs.songUrl]));
+      response.votesForThreeSongs.forEach(votes => newCurrentVotes.push(votes));
+
       this.setState({
         roomNumber: this.props.match.params.roomNumber,
-        roomInfo: response
+        roomInfo: response,
+        songsList: newSongsList,
+        votedSongsList: newVotedSongsList,
+        currentVotes : newCurrentVotes
       })  
     }).catch(err => console.log(err));
   }
@@ -69,7 +83,7 @@ class RoomContainer extends React.Component {
     {
       method: "GET",
       headers: {
-        "Authorization": "Bearer BQBXo2frjyPZrk-1OISJo8UDayKZh16umX7dp--FJF0Z-tZVEzUb2eX5sgkVkWZx0f7-pruWobJvRcxYkfXFZuRf6gHXzRmTKD1Zjii228ftiTXHdImyPA1rlomM2hhIiUh2qaF789L92puofia6Wh4C27adHzwQPkw"
+        "Authorization": "Bearer BQCAFobrHgWhPpWjEI_DFs4MQ3CMVQzNStbPRkdEdxumWuUvI_-bBeMG4AGpGK4Oemirw5dKicx_lm6PzIFGEtAKcnltRV5rHrbGzqc2I6ZJIDEujk17ImGJgSOlVK1gZMRn7e-SakVXCwS1_s2XhyloOHiq7jwiqM5DLGr2GIU1CIDOqr9-AyW_OQR21ErzBFC4GTtCYNlfWT9lergYDU33NxI6GS6RdOJzfgsM8PGaR4FE9m6IpGqZiMfMS88B9v0QxrW4wn3rOiYtA_2pjREFTdNMtw"
       }
     }).then(async response => await response.json())
     .then(response => {
@@ -88,9 +102,25 @@ class RoomContainer extends React.Component {
     return embedUrl;
   };
 
-  addSongToList = (newSong) => {
+  addSongToList = async (newSong) => {
     let newSongList = [...this.state.songsList];
+
     newSongList.push(newSong);
+
+    await fetch(API_URL + `/song/list/room/${this.props.match.params.roomNumber}`, {
+      method: "POST",
+      body:JSON.stringify({
+        "songName": newSong[0],
+        "songUrl": newSong[1]
+    }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    .then(async response => await response.json())
+    .then(response => {
+      console.log("Add song to backend: "+ response);
+    }).catch(err => console.log(err));
 
     console.log("newSong lit:");
     console.log(newSongList);
@@ -100,8 +130,51 @@ class RoomContainer extends React.Component {
     })
   }
 
-  addSongToVotedList = (song) => {
+  updateVoteList = (newVotedSongsList, reinitializedVotes) => {
+    this.setState({
+      votedSongsList : newVotedSongsList,
+      currentVotes: reinitializedVotes
+    })
+  }
 
+
+
+  createNewVote = async () => {
+    //1. clear the existing voted songs in the backend
+    await fetch(API_URL + `/room/${this.props.match.params.roomNumber}/songs/clearVotedSongs`, {
+      method: "GET",
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    .then(async response => await response.json())
+    .then(response => {
+      console.log("cleared voted songs in backend: "+ response);
+    }).catch(err => console.log(err));
+
+    //2. Select 3 songs randomly
+    await fetch(API_URL + `/room/${this.props.match.params.roomNumber}/createvote`, {
+      method: "GET",
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    .then(async response => await response.json())
+    .then(response => {
+      console.log("new list of voted : "+ response);
+
+
+      let newVotedSongsList = [
+        [response[0].songName,response[0].songUrl],
+        [response[1].songName,response[1].songUrl],
+        [response[2].songName,response[2].songUrl],
+    ]
+
+    let reinitializedVotes = [0,0,0];
+
+      this.updateVoteList(newVotedSongsList, reinitializedVotes)
+
+    }).catch(err => console.log(err));
   }
 
   async ChangeSong(songName) {
@@ -112,6 +185,9 @@ class RoomContainer extends React.Component {
     })
   }
 
+
+
+
   render() {
     return ( 
     <RoomView
@@ -120,6 +196,9 @@ class RoomContainer extends React.Component {
       songsList = {this.state.songsList}
       currentSong={this.state.currentSong}
       ChangeSong={this.ChangeSong}
+      currentVotes = {this.state.currentVotes}
+      votedSongsList={this.state.votedSongsList}
+      createNewVote={this.createNewVote}
     />
     );
 }

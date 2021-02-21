@@ -23,11 +23,11 @@ const AboutView = (props) => {
         <Container component="main" maxWidth="xs">
             <CssBaseline>
                 <div className={styles.center}>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h5" Style='color: white; font-size: 3rem;'>
                         About Us
                     </Typography>
 
-                    <div>
+                    <div Style='color: white; font-size: 1rem'>
                         <p>
                             CampfireQueue is the project made by team Panic! at the Pinto at HackBeanPot 2021. Inspired by the campfire theme, this website focuses on the idea of being together, in this case, through music. 
                         </p>

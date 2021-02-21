@@ -1,17 +1,38 @@
-import React from 'react';
-import { Button, List, ListItem, ListItemText } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, List, ListItem, ListItemText, TextField } from '@material-ui/core';
 import '../App.css';
 import { DOMAIN } from "../common";
 
 const RoomView = (props) => {
-    console.log(props);
+  const [songSearch, setSongSearch] = useState("");
+
+    var song_url = "https://open.spotify.com/embed/track/3Icfi1u3cflshuufK4AsIv";
     return (
         <div>
-          <div>
-              <p>"No Song Playing" </p>
-          </div>
           <div className="float-container">
+            <div>
+              <iframe
+              title="player"
+              src={song_url}
+              width="100%"
+              height="80"
+              frameborder="0"
+              allowtransparency="true"
+              allow="encrypted-media">
+              </iframe>
+            </div>
             <div className="float-child">
+              <h1>Queue a Song:</h1>
+              <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="search"
+              label="Search"
+              name="search"
+              onChange={(e) => setSongSearch(e.target.value)}
+              autoFocus
+              />
               <Button variant="contained" color="primary">
                   + Add to the queue
               </Button>
@@ -43,7 +64,7 @@ const RoomView = (props) => {
               </List>
               </div>
               <p> "Share this room w/ friends!" </p>
-              <a href={`${DOMAIN}/room/${props.roomInfo.roomNumber}`}> {`${props.roomInfo.roomNumber}`} </a>
+              <a href={`${DOMAIN}/room/${props.roomInfo.roomInfo}`}> {`${DOMAIN}/room/${props.roomInfo.roomInfo}`} </a>
             </div>
           </div>
         </div>

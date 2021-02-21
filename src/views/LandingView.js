@@ -16,17 +16,23 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
+    color: 'white',
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: "DarkOrange",
+    color: 'white',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    backgroundColor: "white",
+    padding: '2%',
+    borderRadius: '1%',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    color: 'white',
   },
 }));
 
@@ -63,6 +69,7 @@ export default function LandingView(props) {
             name="username"
             onChange={(e) => setUserInput(e.target.value)}
             autoFocus
+            backgroundColor="white"
           />
           <TextField
             variant="outlined"

@@ -10,24 +10,47 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
   color: #61dafb;
 }
 
+body {
+  background-image: url(/src/images/dark_scene.jpg);
+}
+
 .float-container {
-  border: 3px solid #fff;
   padding: 20px;
   height: 100%;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .float-child {
   width: 45%;
   float: left;
   padding: 20px;
-  border: 2px solid red;
   height: 100%;
   flex: '1 1 auto';
-}  
+  box-shadow: 2px 4px #888888;
+  border-radius: 1%;
+  background-color: white;
+  margin: 2%;
+}
+
+@media (min-width: 1000px) {
+
+  .float-container {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+
+@media (min-width: 1200px) {
+
+  .float-container {
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+}

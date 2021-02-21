@@ -6,24 +6,46 @@ import {
 } from "react";
 import {API_URL} from  "../common";
 
-const RoomContainer = (props) => {
-  const [roomNumber, _] = useState(props.match.params.roomNumber);
-  const [roomInfo, setRoomInfo] = useState(props.match.params.roomNumber);
-  useEffect(() => async () => {
-    return await fetch(API_URL + `/room/${roomNumber}`, {
-        method: "GET",
-        headers: {
-          'content-type': 'application/json'
-        }
-      })
-      .then(async response => await response.json())
-      .then(response => {
-        console.log(response);
-        setRoomInfo(response);
-      }).catch(err => console.log(err));
-  }, [roomNumber])
+class RoomContainer extends React.Component {
+  constructor(props) {
+    super(props);
 
-  function FormatURL(song) {
+    this.state = {
+      songsList : [],
+      votedSongsList : [],
+      roomInfo : {},
+      roomNumber: -1
+    }
+
+    //Register hanlders
+    this.SearchForSong = this.SearchForSong.bind(this);
+    this.FormatURL = this.FormatURL.bind(this);
+    this.addSongToList = this.addSongToList.bind(this);
+    this.addSongToVotedList = this.addSongToVotedList.bins(this);
+    this.formatEmbedURL = this.formatEmbedURL.bind(this);
+  }
+
+
+  componentDidMount = async() => {
+
+    await fetch(API_URL + `/room/${this.props.match.params.roomNumber}`, {
+      method: "GET",
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+    .then(async response => await response.json())
+    .then(response => {
+      console.log(response);
+      this.setState({
+        roomNumber: this.props.match.params.roomNumber,
+        roomInfo: response
+      })  
+    }).catch(err => console.log(err));
+  }
+
+
+  FormatURL = (song) => {
     let firstHalf = "https://api.spotify.com/v1/search?q=";
     let endHalf = "&type=track&limit=1";
     let filler = "%20";
@@ -32,7 +54,13 @@ const RoomContainer = (props) => {
     return firstHalf + togetherSong + endHalf;
   }
 
-  async function SearchForSong(song) {
+  formatEmbedURL = (url) => {
+    let prefix = 'https://open.spotify.com/';
+    let splitUrl = url.split(prefix);
+    return prefix + 'embed/' + splitUrl[1];
+  }
+
+  SearchForSong = async (song) => {
     let songURL = FormatURL(song);
     await fetch (songURL,
     {
@@ -42,21 +70,34 @@ const RoomContainer = (props) => {
       }
     }).then(async response => await response.json())
     .then(response => {
-      console.log(response);
-      return response;
+      let result = response.tracks.items[0];
+      let track = result.name;
+      let url = result.external_urls.spotify;
+      let embedUrl = formatEmbedURL(url);
+      console.log(track);
+      console.log(embedUrl);
+      return track;
     }).catch(err => console.log(err));
 
   };
 
-  return ( 
-  <RoomView
-  roomInfo={roomInfo}
-  SearchForSong={SearchForSong}
-  />
-  );
+  addSongToList = (song) => {
+
+  }
+
+  addSongToVotedList = (song) => {
+
+  }
+
+  render() {
+    return ( 
+    <RoomView
+      roomInfo={this.state.roomInfo}
+      SearchForSong={this.SearchForSong}
+    />
+    );
 }
-
-
+}
 
 
 export default RoomContainer;

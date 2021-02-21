@@ -7,9 +7,8 @@ class RoomView extends React.Component{
 
   constructor(props) {
     super(props);
-    var song_url = "https://open.spotify.com/embed/track/3Icfi1u3cflshuufK4AsIv";
     this.state = {
-      songSearch : ""
+      songSearch : "",
     }
 
     this.songSearchUpdateHandler = this.songSearchUpdateHandler.bind(this);
@@ -21,7 +20,7 @@ class RoomView extends React.Component{
     })
   }
   // const [songSearch, setSongSearch] = useState("");
-  
+
   render() {
     
     return (
@@ -30,7 +29,7 @@ class RoomView extends React.Component{
             <div>
               <iframe
               title="player"
-              src={this.song_url}
+              src={this.props.currentSong}
               width="100%"
               height="80"
               frameBorder="0"
@@ -53,7 +52,7 @@ class RoomView extends React.Component{
               <Button
               variant="contained"
               color="primary"
-              onClick={() => this.props.SearchForSong(this.state.songSearch)}
+              onClick={() => this.props.ChangeSong(this.state.songSearch)}
               >
                   + Add to the queue
               </Button>

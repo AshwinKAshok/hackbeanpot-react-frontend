@@ -14,7 +14,8 @@ class RoomContainer extends React.Component {
       songsList : [],
       votedSongsList : [],
       roomInfo : {},
-      roomNumber: -1
+      roomNumber: -1,
+      currentSong: "https://open.spotify.com/embed/track/3Icfi1u3cflshuufK4AsIv"
     }
 
     //Register hanlders
@@ -23,6 +24,7 @@ class RoomContainer extends React.Component {
     this.addSongToList = this.addSongToList.bind(this);
     this.addSongToVotedList = this.addSongToVotedList.bind(this);
     this.FormatEmbedURL = this.FormatEmbedURL.bind(this);
+    this.ChangeSong = this.ChangeSong.bind(this);
   }
 
 
@@ -81,7 +83,9 @@ class RoomContainer extends React.Component {
       let newSong = [track, embedUrl];
 
       this.addSongToList(newSong);
+      
     }).catch(err => console.log(err));
+    return embedUrl;
   };
 
   addSongToList = (newSong) => {
@@ -100,12 +104,22 @@ class RoomContainer extends React.Component {
 
   }
 
+  async ChangeSong(songName) {
+    let nextSong = await this.SearchForSong(songName);
+    console.log(nextSong);
+    this.setState({
+      currentSong : nextSong,
+    })
+  }
+
   render() {
     return ( 
     <RoomView
       roomInfo={this.state.roomInfo}
       SearchForSong={this.SearchForSong}
       songsList = {this.state.songsList}
+      currentSong={this.state.currentSong}
+      ChangeSong={this.ChangeSong}
     />
     );
 }
